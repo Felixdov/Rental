@@ -1,0 +1,18 @@
+﻿@using Rental.Models
+@model List<CarInventory>
+    
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@foreach (CarInventory car in Model)
+{
+    @car.carTypeID
+    <span></span>
+    @car.carId
+    @car.color
+    @car.engine
+    <br />
+}

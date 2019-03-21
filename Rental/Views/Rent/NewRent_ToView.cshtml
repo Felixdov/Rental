@@ -4,24 +4,40 @@
 
 }
 
-
 <h1>@ViewBag.Title</h1>
 <form id="newRental">
 
-    Customer: <input id="customer" name="customer" required value="" class="form-control" />
-    Car: <input id="car" name="car" class="form-control" />
-    סניף איסוף: <div id="PlaceIn">
-        <ul>
-            <il>
-                בחירה של סניפים
-            </il>
-        </ul>
-    </div>
-    תאריך איסוף <input type="date" name="dateCall" required value="" class="form-control">
+    סניף: <input id="customer" name="customer" required value="" class="form-control" />
+    תאריך איסוף: <input type="date" name="dateIn" id="dateIn" class="form-control" />
+    תאריך איסוף <input type="date" name="dateOut" id="dateOut" required value="" class="form-control">
     <div>
         <ul></ul>
     </div>
-    <button>הירשם</button>
+    <select id="chooseCarType">
+        <option value="">mini</option>
+        <option value="">Compact</option>
+        <option value="">Standard</option>
+        <option value="">Family</option>
+        <option value="">Full Size</option>
+    </select>
+    <br />
+    <br />
+    <br />
+    <button id="CarOrder">קבל הצעה</button>
+    <button id="ChooseCar">Choose Car</button>
+    <div>
+        <h2>List Of Cars:</h2>
+        <ul id="cars"></ul>
+
+    </div>
+    <table id="Tab" width="200px" border="1">
+        <tr>
+            <td>CAR TYPE ID</td>
+            <td>COLOR</td>
+            <td>ENGINE</td>
+            <td><button>Choose</button></td>
+        </tr>
+    </table>
 
 </form>
 <div id="holdy">
@@ -37,7 +53,9 @@
         <li> <img src="~/Pictures/d49647b1-e7f9-a631.png" class="4" width="70px" height="70px" /></li>
     </ul>
 
+
 </div>
+
 <main dir="rtl">
     <section>
         <a href="#יונדאי אקסנט">יונדאי אקסנט</a>
@@ -75,27 +93,27 @@
     var init = 0;
     var restTime;
     $(document).ready(function () {
-        $('#holdy img').not('#holdy img:first, #listSlide img').hide(); 
+        $('#holdy img').not('#holdy img:first, #listSlide img').hide();
         alt = $('#holdy img:first').attr('alt');
         $('#blackBlock a').text(alt);
         $('main section p').css({
             textAlign: 'center'
         }).hide();
         $('main section a').css({                   // Use {} for using nore than one method in jason style
-            textDecoration: 'underline' 
+            textDecoration: 'underline'
         }).
-            hover(function () {                      
+            hover(function () {
                 $(this).css("text-decoration", "none");
             }, function () {
                 $(this).css("text-decoration", "underline");
             }
 
-        ).click(function (e) {
-            e.preventDefault();
-            $('main section p').hide(); 
-            $(this).next('p').show();  //next mean that p -paragraph is the next level reletive to <a> 
+            ).click(function (e) {
+                e.preventDefault();
+                $('main section p').hide();
+                $(this).next('p').show();  //next mean that p -paragraph is the next level reletive to <a>
 
-        });
+            });
     });
 
     function changePict() {
@@ -130,16 +148,36 @@
                 return false;
             } else {
 
-
                 clearTimeout(restTime);
                 init = getClass - 1;
                 changePict();
             }
-
-
         });
     });
     changePict();
+
+</script>
+
+<script src="Scripts/jquery-3.3.1.js"></script>
+<script>
+    var CarTypeName = document.getElementById("chooseCarType").innerHTML;
+
+
+    $('#ChooseCar').click(function () {
+        $.getJSON('/api/carlistapi/', function (data) {
+            $.each(data, function (key, value) {
+                $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
+            });
+        });
+    });
+
+    //$('#CarOrder').click(function () {
+    //    $.getJSON('/api/carlistapi?CarTypeName' = CarTypeName, function (data) {
+    //        $.each(data, function (key, value) {
+    //            $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
+    //        });
+    //    });
+    //});
 
 </script>
 <style>

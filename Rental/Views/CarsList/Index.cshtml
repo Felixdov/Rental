@@ -1,0 +1,62 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <h1>Search Car</h1>
+        <input type="text" id="carId" />
+        <input type="button" value="Search With ID" onclick="Search()" />
+        <p id="car" />
+    </div>
+    <div>
+        <h2>List Of Cars:</h2>
+        <ul id="cars"></ul>
+    </div>
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script>var uri = '/api/carlistapi/';
+        $(document).ready(function () {
+            $.getJSON(uri).done(function (data) {
+                $.each(data, function (key, value) {
+
+                    $('<li>', { text: getData(value) }).appendTo($('#cars'));
+
+                });
+            });
+
+        });
+        function getData(data) { return data.CarID + '' + data.CarTypeID + data.Color; }
+        function Search() {
+            var id = $('#carId').val();
+
+            $.getJSON(uri + id, function (d) {
+                if (d != null) {
+                    $('#car').html(getData(data));
+                }
+                if (d == null) {
+                    $('#car').html('The Error Is:' + error);
+                }
+                //).done(function (data) {
+                //    $('#car').text(getData(data));
+                //}).fail(function (jqXHR, MyError, error) {
+                //    $('#car').text('The Error Is:' + error);
+                //});
+
+            });
+
+        }</script>
+
+</body>
+</html>
+@*@@Html.DisplayName(d=>d.)@*@
+
+@*@foreach (CarInventory car in Model)
+    {
+        @car.CarTypeID
+        <span></span>
+        @car.CarID<br/>
+        @car.Color
+    }*@
