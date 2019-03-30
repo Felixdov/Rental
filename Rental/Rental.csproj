@@ -200,7 +200,9 @@
     <Compile Include="Controllers\CarListApiController.cs" />
     <Compile Include="Controllers\CarsListController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\RentController.cs" />
+    <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="dal_sql\Cars_dal.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -219,6 +221,8 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\CarsList\Index.cshtml" />
     <Content Include="Views\CarsList\Inde2x.cshtml" />
+    <Content Include="Views\Orders\Orders_View.cshtml" />
+    <Content Include="Views\Sales\Sales_View.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -229,7 +233,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\CarListApi\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

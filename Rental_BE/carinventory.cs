@@ -19,5 +19,6 @@ namespace Rental_BE
         public string Color { get; set; }
         public string Engine { get; set; }
         public string CarTypeName { get; set; }
+        public Nullable<decimal> PricePerDay { get; set; }
     }
 }

@@ -11,20 +11,22 @@
     תאריך איסוף: <input type="date" name="dateIn" id="dateIn" class="form-control" />
     תאריך איסוף <input type="date" name="dateOut" id="dateOut" required value="" class="form-control">
     <div>
-        <ul>changed</ul>
+        <ul></ul>
     </div>
     <select id="chooseCarType">
-        <option value="">mini</option>
-        <option value="">Compact</option>
-        <option value="">Standard</option>
-        <option value="">Family</option>
-        <option value="">Full Size</option>
+        <option value="">בחר סוג רכב</option>
+        <option value="mini">mini</option>
+        <option value="Compact">Compact</option>
+        <option value="Standard">Standard</option>
+        <option value="Family">Family</option>
+        <option value="Full Size">Full Size</option>
     </select>
     <br />
     <br />
     <br />
-    <button id="CarOrder">קבל הצעה</button>
-    <button id="ChooseCar">Choose Car</button>
+
+    <button id="showAllCars">Show all cars</button>
+    <button id="carType">Show chosen CarType</button>
     <div>
         <h2>List Of Cars:</h2>
         <ul id="cars"></ul>
@@ -32,12 +34,29 @@
     </div>
     <table id="Tab" width="200px" border="1">
         <tr>
-            <td>CAR TYPE ID</td>
-            <td>COLOR</td>
-            <td>ENGINE</td>
-            <td><button>Choose</button></td>
+            <th>car type</th>
+            <th>color</th>
+            <th>engine</th>
+            <th>carid</th>
+            <th>price</th>
+            <th><button>choose</button></th>
         </tr>
     </table>
+
+    @*Update Button Using a Post Method*@
+    <input type="text" id="id" value="insertCarID" class="form-control" />
+    <button id="CarOrder">קבל הצעה</button>
+    <p id="carWithId" />
+    <br />
+
+    <input type="text" id="carTypeName" placeholder="name of car" />
+    <input type="text" id="color" placeholder="color of car" />
+    <input type="text" id="engine" placeholder="engine of car" />
+    <input type="text" id="carTypeID" placeholder="carTypeID of car" />
+    <input type="text" id="carID" placeholder="carID of car" />
+    <input type="text" id="carPrice" placeholder="carPrice of car" />
+
+    <button id="postButton">Post</button>
 
 </form>
 <div id="holdy">
@@ -86,8 +105,6 @@
     </section>
 
 </main>
-
-
 <script>
     var alt;
     var init = 0;
@@ -157,28 +174,71 @@
     changePict();
 
 </script>
-
-<script src="Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery-3.3.1.js"></script>
 <script>
-    var CarTypeName = document.getElementById("chooseCarType").innerHTML;
 
-
-    $('#ChooseCar').click(function () {
+    //var tblCars = "<tr><th>CAR TYPE</th><th>COLOR</th><th>ENGINE</th><th>CarID</th><th><button>Choose</button></th></tr>";
+    $('#showAllCars').click(function () {
         $.getJSON('/api/carlistapi/', function (data) {
             $.each(data, function (key, value) {
-                $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
+                $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + value.CarID + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
             });
         });
     });
 
-    //$('#CarOrder').click(function () {
-    //    $.getJSON('/api/carlistapi?CarTypeName' = CarTypeName, function (data) {
-    //        $.each(data, function (key, value) {
-    //            $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
-    //        });
-    //    });
-    //});
+    $("#carType").click(function () {
+        var carType = $("#chooseCarType option:selected").val();
+        alert($("#chooseCarType option:selected").val());
+        $.getJSON('/api/carlistapi?CarTypeName=' + carType, function (data) {
+            $.each(data, function (key, value) {
+                $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + value.CarID + '</td><td>' + value.PricePerDay + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
+            });
+        });
+    });
 
+    $('#postButton').click(function () {
+        var ctm = $('#carTypeName').val();
+        var color = $('#color').val();
+        var engine = $('#engine').val();
+        var carTypeID = $('#carTypeID').val();
+        var carID = $('#carID').val();
+        $.ajax({
+            type: 'Post',
+            contentType: 'application/json;charset=utf-8',
+            url: '/api/carlistapi',
+            data: JSON.stringify({
+                CarTypeName: ctm,
+                Color: color,
+                Engine: engine,
+                CarTypeId: carTypeID,
+                CarID: carID
+            }),
+            dataType: 'json',
+            success: function () {
+                $.getJSON('/api/carlistapi/', function (data) {
+                    $.each(data, function (key, value) {
+                        $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
+                    });
+                });
+            }
+        });
+    });
+
+
+
+</script>
+<script>
+    $(function () {
+        $('#CarOrder').click(function () {
+            var idCar = $('#id').val();
+            $.getJSON('/api/carlistapi?CarID=' + idCar, function (data) {
+                alert(data.carID);
+                //$('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
+                $('#carWithId').text(data.CarTypeName + data.Color + data.Engine + data.CarID + data.CarTypeId).appendTo($('#carWithId'))
+
+            });
+        });
+    });
 </script>
 <style>
     #holdy {
