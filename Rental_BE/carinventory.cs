@@ -14,11 +14,20 @@ namespace Rental_BE
     
     public partial class carinventory
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public carinventory()
+        {
+            this.OrderLists = new HashSet<OrderList>();
+        }
+    
         public int CarTypeId { get; set; }
-        public int CarID { get; set; }
+        public int ID { get; set; }
         public string Color { get; set; }
         public string Engine { get; set; }
         public string CarTypeName { get; set; }
         public Nullable<decimal> PricePerDay { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderList> OrderLists { get; set; }
     }
 }

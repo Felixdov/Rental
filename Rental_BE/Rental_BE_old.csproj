@@ -58,6 +58,10 @@
       <DependentUpon>RemtCar_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="CarsLogic.cs" />
+    <Compile Include="OrderList.cs">
+      <DependentUpon>RemtCar_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrdersLogicOld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemtCar_DB.Context.cs">
       <AutoGen>True</AutoGen>

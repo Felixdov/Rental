@@ -11,6 +11,7 @@ namespace Rental.Controllers
         // GET: Sales
         public ActionResult Sales_View()
         {
+            ViewBag.Title = "מבצעים חמים";
             return View();
         }
     }

@@ -8,15 +8,15 @@ namespace Rental_BE
 {
     public class CarsLogic : BaseLogic
     {
-        public List<carinventory> CarList()
+        public IEnumerable<carinventory> CarList()
         {
-            return DB.carinventories.ToList();
+            return DB.carinventories.AsEnumerable();
         }
 
 
         public carinventory ChosenCar(int id)
         {
-            carinventory oneCar = DB.carinventories.FirstOrDefault(c => c.CarID == id);
+            carinventory oneCar = DB.carinventories.FirstOrDefault(c => c.ID == id);
             if (oneCar == null)
             {
                 return null;
@@ -30,12 +30,16 @@ namespace Rental_BE
 
         public List<carinventory> CarByCategory(string CarTypeName)
         {
-            return (from x in DB.carinventories
-                    
-                    where x.CarTypeName.Contains(CarTypeName)
-                    select x).ToList();
+            return (NewMethod(CarTypeName)).ToList();
         }
 
+        private IQueryable<carinventory> NewMethod(string CarTypeName)
+        {
+            return from x in DB.carinventories
+
+                   where x.CarTypeName.Contains(CarTypeName)
+                   select x;
+        }
 
         public void PostCreateNewCar(carinventory car)
         {
@@ -43,6 +47,15 @@ namespace Rental_BE
             DB.SaveChanges();
         }
 
+        //public List<OrderList> ShowOrderList()
+        //{
+        //    return DB.OrderLists.ToList();
+
+        //}
+        //return (from x in DB.carinventories
+
+        //           where x.CarTypeName.Contains(CarTypeName)
+        //           select x).ToList();
 
     }
 }

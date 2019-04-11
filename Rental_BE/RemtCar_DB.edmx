@@ -7,17 +7,47 @@
     <Schema Namespace="RentCarModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="carinventory">
           <Key>
-            <PropertyRef Name="CarID" />
+            <PropertyRef Name="ID" />
           </Key>
           <Property Name="CarTypeId" Type="int" Nullable="false" />
-          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="Color" Type="varchar" MaxLength="50" />
           <Property Name="Engine" Type="varchar" MaxLength="50" />
           <Property Name="CarTypeName" Type="varchar" MaxLength="15" />
           <Property Name="PricePerDay" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
+        <EntityType Name="OrderList">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="OrderDate" Type="date" Nullable="false" />
+          <Property Name="PickUpDate" Type="date" Nullable="false" />
+          <Property Name="DropOffDate" Type="date" Nullable="false" />
+          <Property Name="DiscountCode" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="OrderCost" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <Association Name="FK_OrderList_carinventory">
+          <End Role="carinventory" Type="Self.carinventory" Multiplicity="1" />
+          <End Role="OrderList" Type="Self.OrderList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="carinventory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderList">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="RentCarModelStoreContainer">
           <EntitySet Name="carinventory" EntityType="Self.carinventory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderList" EntityType="Self.OrderList" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_OrderList_carinventory" Association="Self.FK_OrderList_carinventory">
+            <End Role="carinventory" EntitySet="carinventory" />
+            <End Role="OrderList" EntitySet="OrderList" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -25,19 +55,51 @@
       <Schema Namespace="RentCarModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="RentCarEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="carinventories" EntityType="RentCarModel.carinventory" />
+          <EntitySet Name="OrderLists" EntityType="RentCarModel.OrderList" />
+          <AssociationSet Name="FK_OrderList_carinventory" Association="RentCarModel.FK_OrderList_carinventory">
+            <End Role="carinventory" EntitySet="carinventories" />
+            <End Role="OrderList" EntitySet="OrderLists" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="carinventory">
           <Key>
-            <PropertyRef Name="CarID" />
+            <PropertyRef Name="ID" />
           </Key>
           <Property Name="CarTypeId" Type="Int32" Nullable="false" />
-          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Engine" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CarTypeName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="PricePerDay" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="OrderLists" Relationship="RentCarModel.FK_OrderList_carinventory" FromRole="carinventory" ToRole="OrderList" />
         </EntityType>
-      </Schema>
+        <EntityType Name="OrderList">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PickUpDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DropOffDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DiscountCode" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="OrderCost" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="carinventory" Relationship="RentCarModel.FK_OrderList_carinventory" FromRole="OrderList" ToRole="carinventory" />
+        </EntityType>
+        <Association Name="FK_OrderList_carinventory">
+          <End Type="RentCarModel.carinventory" Role="carinventory" Multiplicity="1" />
+          <End Type="RentCarModel.OrderList" Role="OrderList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="carinventory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderList">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -50,8 +112,22 @@
                 <ScalarProperty Name="CarTypeName" ColumnName="CarTypeName" />
                 <ScalarProperty Name="Engine" ColumnName="Engine" />
                 <ScalarProperty Name="Color" ColumnName="Color" />
-                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="CarTypeId" ColumnName="CarTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderLists">
+            <EntityTypeMapping TypeName="RentCarModel.OrderList">
+              <MappingFragment StoreEntitySet="OrderList">
+                <ScalarProperty Name="OrderCost" ColumnName="OrderCost" />
+                <ScalarProperty Name="DiscountCode" ColumnName="DiscountCode" />
+                <ScalarProperty Name="DropOffDate" ColumnName="DropOffDate" />
+                <ScalarProperty Name="PickUpDate" ColumnName="PickUpDate" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="CustName" ColumnName="CustName" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

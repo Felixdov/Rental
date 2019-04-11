@@ -1,8 +1,141 @@
 ﻿
 @{
-    ViewBag.Title = "Sales_View";
+    
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Sales_View</h2>
+<h2>@ViewBag.Title</h2>
+<div id="holdy">
+    <div id="blackBlock"><a href="#"></a></div>
+    <img src="~/Pictures/d49647b1-cd8c-e5b1.png" class="1" alt="one" />
+    <img src="~/Pictures/d49647b1-7f39-0b6b.png" class="2" alt="two" />
+    <img src="~/Pictures/d49647b1-e7d8-7c33.png" class="3" alt="three" />
+    <img src="~/Pictures/d49647b1-e7f9-a631.png" class="4" alt="four" />
+    <ul id="listSlide">
+        <li><img src="~/Pictures/d49647b1-cd8c-e5b1.png" class="1" width="70px" height="70px" /></li>
+        <li><img src="~/Pictures/d49647b1-7f39-0b6b.png" class="2" width="70px" height="70px" /></li>
+        <li><img src="~/Pictures/d49647b1-e7d8-7c33.png" class="3" width="70px" height="70px" /></li>
+        <li> <img src="~/Pictures/d49647b1-e7f9-a631.png" class="4" width="70px" height="70px" /></li>
+    </ul>
 
+
+</div>
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script>
+    var alt;
+    var init = 0;
+    var restTime;
+    $(document).ready(function () {
+        $('#holdy img').not('#holdy img:first, #listSlide img').hide();
+        alt = $('#holdy img:first').attr('alt');
+        $('#blackBlock a').text(alt);
+        $('main section p').css({
+            textAlign: 'center'
+        }).hide();
+        $('main section a').css({                   // Use {} for using nore than one method in jason style
+            textDecoration: 'underline'
+        }).
+            hover(function () {
+                $(this).css("text-decoration", "none");
+            }, function () {
+                $(this).css("text-decoration", "underline");
+            }
+
+            ).click(function (e) {
+                e.preventDefault();
+                $('main section p').hide();
+                $(this).next('p').show();  //next mean that p -paragraph is the next level reletive to <a>
+
+            });
+    });
+
+    function changePict() {
+        restTime = setTimeout('changePict()', 2000);
+        if (init < 4) {
+            init++;
+
+            $('#blackBlock').slideToggle(300, function () {
+                $('#holdy img:visible').not('#listSlide img').hide();
+                $('#holdy img.' + init).show();
+                alt = $('#holdy img.' + init).attr('alt');
+                $('#blackBlock a').text(alt);
+            }).slideToggle(300);
+        }
+        else {
+
+            $('#blackBlock').slideToggle(300, function () {
+                $('#holdy img:visible').not('#listSlide img').hide();
+                $('#holdy img:first').show();
+                alt = $('#holdy img:first').attr('alt');
+                $('#blackBlock a').text(alt);
+
+            }).slideToggle(300);
+            init = 1;
+        }
+    }
+
+    $(function () {
+        $('#listSlide li img').click(function () {
+            var getClass = $(this).attr('class');
+            if (init == getClass) {
+                return false;
+            } else {
+
+                clearTimeout(restTime);
+                init = getClass - 1;
+                changePict();
+            }
+        });
+    });
+    changePict();
+
+</script>
+
+<style>
+    #holdy {
+        width: 350px;
+        height: 380px;
+        padding: 3px;
+        margin: 0 auto;
+        border: 1px solid red;
+        position: relative;
+    }
+
+    #blackBlock {
+        background: #000;
+        opacity: 0.6;
+        width: 340px;
+        height: 102px;
+        position: absolute;
+        top: 185px;
+        line-height: 100px;
+        text-align: center;
+    }
+
+        #blackBlock a {
+            color: white;
+            text-decoration: none;
+            font-size: 2.2em;
+        }
+
+            #blackBlock a:hover {
+                text-decoration: underline;
+            }
+
+    #listSlide {
+        margin-top: 75px;
+        padding: 0;
+        margin-left: 10px;
+        list-style: none;
+    }
+
+        #listSlide li {
+            float: left;
+            margin: 3px;
+            padding: 0;
+        }
+
+            #listSlide li img {
+                cursor: pointer;
+            }
+</style>

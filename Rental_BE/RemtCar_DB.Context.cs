@@ -26,5 +26,6 @@ namespace Rental_BE
         }
     
         public virtual DbSet<carinventory> carinventories { get; set; }
+        public virtual DbSet<OrderList> OrderLists { get; set; }
     }
 }

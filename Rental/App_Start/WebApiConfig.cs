@@ -10,7 +10,9 @@ namespace Rental
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-
+            var json = config.Formatters.JsonFormatter;
+            json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
             // Web API routes
             config.MapHttpAttributeRoutes();
 
@@ -20,7 +22,9 @@ namespace Rental
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+
+
+            //config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
         }
     }
 }

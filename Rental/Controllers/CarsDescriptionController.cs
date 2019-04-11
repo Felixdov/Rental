@@ -6,12 +6,12 @@ using System.Web.Mvc;
 
 namespace Rental.Controllers
 {
-    public class RentController : Controller
+    public class CarsDescriptionController : Controller
     {
-        // GET: Rent
-        public ActionResult NewRent_ToView()
+        // GET: CarsDescription
+        public ActionResult CarsDescription_View()
         {
-            ViewBag.Title = "בחר רכב להשכרה";
+            ViewBag.Title = "רכבים מומלצים";
             return View();
         }
     }

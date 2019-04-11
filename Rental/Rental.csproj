@@ -196,19 +196,33 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BE_Logic\BasicLogic.cs" />
+    <Compile Include="BE_Logic\CarsLogic.cs" />
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\CarListApiController.cs" />
+    <Compile Include="Controllers\CarOrdersApiController.cs" />
+    <Compile Include="Controllers\CarsDescriptionController.cs" />
     <Compile Include="Controllers\CarsListController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\RentController.cs" />
     <Compile Include="Controllers\SalesController.cs" />
-    <Compile Include="dal_sql\Cars_dal.cs" />
+    <Compile Include="Dal\CarsDal.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\CarInventoryOld.cs" />
+    <Compile Include="Migrations\201904031734311_InitialCreate.cs" />
+    <Compile Include="Migrations\201904031734311_InitialCreate.Designer.cs">
+      <DependentUpon>201904031734311_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904080335088_AddOrderList.cs" />
+    <Compile Include="Migrations\201904080335088_AddOrderList.Designer.cs">
+      <DependentUpon>201904080335088_AddOrderList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\CarInventory.cs" />
     <Compile Include="Models\CarModel.cs" />
+    <Compile Include="Models\OrderList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +237,7 @@
     <Content Include="Views\CarsList\Inde2x.cshtml" />
     <Content Include="Views\Orders\Orders_View.cshtml" />
     <Content Include="Views\Sales\Sales_View.cshtml" />
+    <Content Include="Views\CarsDescription\CarsDescription_View.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -241,10 +256,12 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Rental_BE\Rental_BE.csproj">
-      <Project>{F4AB0579-4763-400D-A46D-F3EF1A435FC7}</Project>
-      <Name>Rental_BE</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="Migrations\201904031734311_InitialCreate.resx">
+      <DependentUpon>201904031734311_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904080335088_AddOrderList.resx">
+      <DependentUpon>201904080335088_AddOrderList.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

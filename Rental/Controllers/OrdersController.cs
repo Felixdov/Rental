@@ -11,6 +11,7 @@ namespace Rental.Controllers
         // GET: Orders_View
         public ActionResult Orders_View()
         {
+            ViewBag.Title = "הזמנות";
             return View();
         }
     }

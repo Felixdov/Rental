@@ -9,6 +9,8 @@ using System.Web.SessionState;
 using System.Web.Http;
 using Rental.App_Start;
 using System.Web.Optimization;
+using System.Data.Entity;
+using Rental.Dal;
 
 namespace Rental
 {
@@ -20,7 +22,10 @@ namespace Rental
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-          //  BundleConfig.RegisterBundels(BundleTable.Bundles);
+            //  BundleConfig.RegisterBundels(BundleTable.Bundles);
+            HttpConfiguration config = GlobalConfiguration.Configuration;
+
+            
 
         }
     }

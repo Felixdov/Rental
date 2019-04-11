@@ -1,8 +1,111 @@
 ﻿
 @{
-    ViewBag.Title = "Orders_View";
+
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Orders_View</h2>
 
+<h2>@ViewBag.Title</h2>
+<form id="newRental">
+
+    שם הלקוח: <input id="customer" name="customer" required value="" class="form-control" />
+    <select id="chooseCarType" required value="" class="form-control">
+        <option value="">בחר סוג רכב</option>
+        <option value="mini">mini</option>
+        <option value="Compact">Compact</option>
+        <option value="Standard">Standard</option>
+        <option value="Family">Family</option>
+        <option value="Full Size">Full Size</option>
+    </select>
+    תאריך איסוף: <input type="date" name="dateIn" id="dateIn" required value="" class="form-control" />
+    תאריך איסוף <input type="date" name="dateOut" id="dateOut" required value="" class="form-control">
+    <div>
+        <ul></ul>
+    </div>
+    <button id="showOrders" class="form-control-static">show me all orders</button>
+    <br />
+    <br />
+
+    @*button that shows available cars*@
+    <button id="carType">Show chosen CarType</button>
+    <div>
+        <h2>List Of Cars:</h2>
+        <ul id="cars"></ul>
+    </div>
+    <table id="Tab" width="200px" border="1" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>מס הזמנה</th>
+                <th>שם לקוח</th>
+                <th>מס רכב</th>
+                <th>תאריך הזמנה</th>
+                <th>תאריך איסוף</th>
+                <th>תאריך החזרה</th>
+                <th>תאריך איסוף</th>
+                <th><button>choose</button></th>
+            </tr>
+        </thead>
+    </table>
+
+    @*Update Orders Using a Post Method*@
+    <input type="text" id="id" value="insertCarID" class="form-control" />
+    <button id="CarOrder">קבל הצעה</button>
+    <p id="carWithId" />
+    <br />
+
+    <input type="text" id="custName" placeholder="Customer Name" />
+    <input type="text" id="carId" placeholder="car Number" />
+    <input type="text" id="pickUpDate" placeholder="Pick up Date" />
+    <input type="text" id="dropOffDate" placeholder="Return Day" />
+   
+    
+    <button id="postButton">Post</button>
+
+</form>
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script>
+
+    $('#showOrders').click(function () {
+        $.getJSON('/api/carordersapi/', function (data) {
+            alert("Hello");
+            $.each(data, function (key, value) {
+                $('<tbody><tr><td>' + value.OrderID + '</td><td>' + value.CustName + '</td><td>' + value.CarID + '</td><td>' + value.OrderDate + '</td><td>' + '</td><td>' + value.PickUpDate + '</td><td>' + '</td><td>' + value.DropOffDate + '</td><td>'+'<button>' + 'choose' + '</button>' + '</td></tr></tbody>').appendTo($('#Tab'));
+            });
+        });
+    });
+
+    $('#postButton').click(function () {
+        var custName = $('#custName').val();
+        var carID = $('#carId').val();
+        var orderday = $.now();
+        var pickupday = $('#pickUpDate').val();
+        var dropfodate = $('#dropOffDate').val();
+        $.ajax({
+            type: 'Post',
+            contentType: 'application/json;charset=utf-8',
+            url: '/api/carordersapi',
+            data: JSON.stringify({
+                custName: CustName,
+                orderday: OrderDaterID,
+                pickupday: PickUpDate,
+                dropfodate: DropOffDate,
+                CarTypeId: carTypeID,
+                CarID: ID
+            }),
+            dataType: 'json',
+            success: function () {
+                $.getJSON('/api/carordersapi/', function (data) {
+                    $.each(data, function (key, value) {
+                        $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
+                    });
+                });
+            }
+        });
+    });
+
+</script>
+<style>
+    table th {
+        width: auto !important;
+    }
+</style>

@@ -7,13 +7,7 @@
 <h1>@ViewBag.Title</h1>
 <form id="newRental">
 
-    סניף: <input id="customer" name="customer" required value="" class="form-control" />
-    תאריך איסוף: <input type="date" name="dateIn" id="dateIn" class="form-control" />
-    תאריך איסוף <input type="date" name="dateOut" id="dateOut" required value="" class="form-control">
-    <div>
-        <ul></ul>
-    </div>
-    <select id="chooseCarType">
+    <select id="chooseCarType" required value="" class="form-control">
         <option value="">בחר סוג רכב</option>
         <option value="mini">mini</option>
         <option value="Compact">Compact</option>
@@ -21,12 +15,27 @@
         <option value="Family">Family</option>
         <option value="Full Size">Full Size</option>
     </select>
-    <br />
+    תאריך איסוף: <input type="date" name="dateIn" id="dateIn" class="form-control" />
+    תאריך החזרה: <input type="date" name="dateOut" id="dateOut" required value="" class="form-control">
+    <div>
+        <ul></ul>
+    </div>
+    <button id="carType" class="form-control-static">Show chosen CarType</button>
+
+    @*<select id="choosecartype">
+            <option value="">בחר סוג רכב</option>
+            <option value="mini">mini</option>
+            <option value="compact">compact</option>
+            <option value="standard">standard</option>
+            <option value="family">family</option>
+            <option value="full size">full size</option>
+        </select>
+        <br />*@
     <br />
     <br />
 
     <button id="showAllCars">Show all cars</button>
-    <button id="carType">Show chosen CarType</button>
+
     <div>
         <h2>List Of Cars:</h2>
         <ul id="cars"></ul>
@@ -43,12 +52,13 @@
         </tr>
     </table>
 
-    @*Update Button Using a Post Method*@
+
     <input type="text" id="id" value="insertCarID" class="form-control" />
     <button id="CarOrder">קבל הצעה</button>
     <p id="carWithId" />
     <br />
 
+    @*Update Button Using a Post Method*@
     <input type="text" id="carTypeName" placeholder="name of car" />
     <input type="text" id="color" placeholder="color of car" />
     <input type="text" id="engine" placeholder="engine of car" />
@@ -59,21 +69,7 @@
     <button id="postButton">Post</button>
 
 </form>
-<div id="holdy">
-    <div id="blackBlock"><a href="#"></a></div>
-    <img src="~/Pictures/d49647b1-cd8c-e5b1.png" class="1" alt="one" />
-    <img src="~/Pictures/d49647b1-7f39-0b6b.png" class="2" alt="two" />
-    <img src="~/Pictures/d49647b1-e7d8-7c33.png" class="3" alt="three" />
-    <img src="~/Pictures/d49647b1-e7f9-a631.png" class="4" alt="four" />
-    <ul id="listSlide">
-        <li><img src="~/Pictures/d49647b1-cd8c-e5b1.png" class="1" width="70px" height="70px" /></li>
-        <li><img src="~/Pictures/d49647b1-7f39-0b6b.png" class="2" width="70px" height="70px" /></li>
-        <li><img src="~/Pictures/d49647b1-e7d8-7c33.png" class="3" width="70px" height="70px" /></li>
-        <li> <img src="~/Pictures/d49647b1-e7f9-a631.png" class="4" width="70px" height="70px" /></li>
-    </ul>
 
-
-</div>
 
 <main dir="rtl">
     <section>
@@ -99,81 +95,10 @@
         <a href="#mazda">מזדה</a>
         <p>
             אקסנט היא מכונית סופר מיני בתצורת סדאן או האצ'בק עם ארבע או חמש דלתות, המיועדת בעיקר לשווקים מתפתחים. בדורות המאוחרים היא חולקת את הפלטפורמה עם קיה ריו. הדור הרביעי הוצג בשנת 2010. הוא שווק בישראל תחת השם i25 אקסנט, וכך גם בקולומביה. הוא מגיע עם מנוע בנזין בנפח 1.4 ליטר ו-1.6 ליטר המפיקים 109 ו-126 כ״ס בהתאמה, ותיבת הילוכים ידנית בעלת 5 או 6 הילוכים ותיבה אוטומטית בעלת 4 או 6 הילוכים.
-
         </p>
-
     </section>
-
 </main>
-<script>
-    var alt;
-    var init = 0;
-    var restTime;
-    $(document).ready(function () {
-        $('#holdy img').not('#holdy img:first, #listSlide img').hide();
-        alt = $('#holdy img:first').attr('alt');
-        $('#blackBlock a').text(alt);
-        $('main section p').css({
-            textAlign: 'center'
-        }).hide();
-        $('main section a').css({                   // Use {} for using nore than one method in jason style
-            textDecoration: 'underline'
-        }).
-            hover(function () {
-                $(this).css("text-decoration", "none");
-            }, function () {
-                $(this).css("text-decoration", "underline");
-            }
 
-            ).click(function (e) {
-                e.preventDefault();
-                $('main section p').hide();
-                $(this).next('p').show();  //next mean that p -paragraph is the next level reletive to <a>
-
-            });
-    });
-
-    function changePict() {
-        restTime = setTimeout('changePict()', 2000);
-        if (init < 4) {
-            init++;
-
-            $('#blackBlock').slideToggle(300, function () {
-                $('#holdy img:visible').not('#listSlide img').hide();
-                $('#holdy img.' + init).show();
-                alt = $('#holdy img.' + init).attr('alt');
-                $('#blackBlock a').text(alt);
-            }).slideToggle(300);
-        }
-        else {
-
-            $('#blackBlock').slideToggle(300, function () {
-                $('#holdy img:visible').not('#listSlide img').hide();
-                $('#holdy img:first').show();
-                alt = $('#holdy img:first').attr('alt');
-                $('#blackBlock a').text(alt);
-
-            }).slideToggle(300);
-            init = 1;
-        }
-    }
-
-    $(function () {
-        $('#listSlide li img').click(function () {
-            var getClass = $(this).attr('class');
-            if (init == getClass) {
-                return false;
-            } else {
-
-                clearTimeout(restTime);
-                init = getClass - 1;
-                changePict();
-            }
-        });
-    });
-    changePict();
-
-</script>
 <script src="~/Scripts/jquery-3.3.1.js"></script>
 <script>
 
@@ -181,17 +106,18 @@
     $('#showAllCars').click(function () {
         $.getJSON('/api/carlistapi/', function (data) {
             $.each(data, function (key, value) {
-                $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + value.CarID + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
+                $('<tr><td>' + value.ID + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + value.CarTypeName + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
             });
         });
     });
 
+    //method to show chosen datatable by slected car type
     $("#carType").click(function () {
         var carType = $("#chooseCarType option:selected").val();
         alert($("#chooseCarType option:selected").val());
         $.getJSON('/api/carlistapi?CarTypeName=' + carType, function (data) {
             $.each(data, function (key, value) {
-                $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + value.CarID + '</td><td>' + value.PricePerDay + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
+                $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + value.ID + '</td><td>' + value.PricePerDay + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
             });
         });
     });
@@ -211,7 +137,7 @@
                 Color: color,
                 Engine: engine,
                 CarTypeId: carTypeID,
-                CarID: carID
+                CarID: ID
             }),
             dataType: 'json',
             success: function () {
@@ -234,7 +160,7 @@
             $.getJSON('/api/carlistapi?CarID=' + idCar, function (data) {
                 alert(data.carID);
                 //$('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
-                $('#carWithId').text(data.CarTypeName + data.Color + data.Engine + data.CarID + data.CarTypeId).appendTo($('#carWithId'))
+                $('#carWithId').text(data.CarTypeName + data.Color + data.Engine + data.ID + data.CarTypeId).appendTo($('#carWithId'))
 
             });
         });
