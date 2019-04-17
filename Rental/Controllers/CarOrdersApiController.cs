@@ -18,19 +18,11 @@ namespace Rental.Controllers
 
         public List<OrderList> GetAllOrders() // the methoda is called because its named Get... and by the call from the JQuery
         {
-
             using (CarsDal dal = new CarsDal())
             {
                 return dal.OrderLists.ToList();
 
             }
-
-
-            //using (CarsLogic ordersFromDB = new CarsLogic())
-            //{
-            //    return ordersFromDB.ShowOrderList();
-            //}
         }
-
     }
 }

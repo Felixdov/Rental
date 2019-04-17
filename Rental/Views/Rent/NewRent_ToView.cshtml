@@ -21,7 +21,7 @@
         <ul></ul>
     </div>
     <button id="carType" class="form-control-static">Show chosen CarType</button>
-
+    <button id="availableCars" class="form-control-static">מצא רכבים פנויים</button>
     @*<select id="choosecartype">
             <option value="">בחר סוג רכב</option>
             <option value="mini">mini</option>
@@ -106,7 +106,7 @@
     $('#showAllCars').click(function () {
         $.getJSON('/api/carlistapi/', function (data) {
             $.each(data, function (key, value) {
-                $('<tr><td>' + value.ID + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + value.CarTypeName + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
+                $('<tr><td>' + value.ID + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + value.CarTypeName + '</td><td>' + '<button id="alt">' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
             });
         });
     });
@@ -121,6 +121,19 @@
             });
         });
     });
+
+
+    //method for choosing between two dates
+    
+    $("#availableCars").click(function () {
+        var dateIn = $("dateIn").value();
+        var dateOut = $("dateOut").val();
+        alert($("#dateIn").val());
+        $.getJSON('/api/carlistapi?dateIn=' + dateIn +'&'+'dateOut=' + dateOut, function (data) {
+            alert('hello');
+        });
+    });
+
 
     $('#postButton').click(function () {
         var ctm = $('#carTypeName').val();
@@ -150,7 +163,9 @@
         });
     });
 
-
+    $('#alt').click(function () {
+        alert('Order Made');
+    });
 
 </script>
 <script>

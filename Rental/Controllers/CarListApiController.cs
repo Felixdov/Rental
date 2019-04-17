@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using Rental.Dal;
+using Rental.BE_Logic;
 
 
 namespace Rental.Controllers
@@ -24,7 +25,7 @@ namespace Rental.Controllers
         //    // new CarModel {carTypeID=2,categorie="mini",modelName="mazda2" },
         //    //  new CarModel {carTypeID=3,categorie="famaly",modelName="mazda6" },
         //};
-       
+
         public IEnumerable<CarInventory> GetAllCars() // the methoda is called because its named Get... and by the call from the JQuery
         {
             //using (RentCarEntities dal=new RentCarEntities())
@@ -45,22 +46,39 @@ namespace Rental.Controllers
             //{
             //    return dal.carinventories.ToList();
             //}
-            //using (CarsLogic carsFromDb = new CarsLogic())
-            //{
-            //    return carsFromDb.ChosenCar(CarID);
-            //}
-            return null;
+            using (CarsLogic carsfromdb = new CarsLogic())
+            {
+                return carsfromdb.ChosenCar(CarID);
+            }
+           
         }
 
-        //public IEnumerable<CarInventory> GetCarByCategory(string CarTypeName)
-        //{
+        public IQueryable<CarInventory> GetCarByCategory(string CarTypeName)
+        {
 
-        //    using (CarsLogic carsFromDb = new CarsLogic())
-        //    {
-        //        return carsFromDb.CarByCategory(CarTypeName);
-        //    }
+            using (CarsLogic carsByCategory = new CarsLogic())
+            {
 
-        //}
+                return carsByCategory.CarByCategory(CarTypeName).AsQueryable();
+                //return from x in dal.CarInventories
+                //       where x.CarTypeName.Contains(CarTypeName)
+                //       select x;
+            }
+        }
+
+        public IQueryable<OrderList> GetAvailableCars(DateTime dateIn, DateTime dateOut)
+        {
+
+            using (CarsLogic availableCars = new CarsLogic())
+            {
+
+                return availableCars.AvailableCars(dateIn, dateOut).AsQueryable();
+                //return from x in dal.CarInventories
+                //       where x.CarTypeName.Contains(CarTypeName)
+                //       select x;
+            }
+        }
+
 
 
         //public void PostNewOrder(CarInventory car)
