@@ -8,7 +8,7 @@ using Rental.Models;
 using Rental.Dal;
 using System.Data.Entity;
 
-namespace  Rental.BE_Logic
+namespace Rental.BE_Logic
 
 {
     public class CarsLogic : BaseLogic
@@ -48,18 +48,23 @@ namespace  Rental.BE_Logic
         }
 
 
-        public List<OrderList> AvailableCars(DateTime dateIn, DateTime dateOut)
+        public List<CarInventory> AvailableCars(DateTime dateIn ,DateTime dateOut)
         {
             return (NewMethod1(dateIn, dateOut)).ToList();
         }
 
-        private IQueryable<OrderList> NewMethod1(DateTime dateIn, DateTime dateOut)
+        private IQueryable<CarInventory> NewMethod1(DateTime d1, DateTime d2)
         {
-            return from x in DB.OrderLists
+            return from x in DB.CarInventories
+                   from ord in x.OrderLists
 
-                   where dateIn < x.PickUpDate && dateOut <x.DropOffDate
-                   where dateIn > x.PickUpDate && dateOut < x.DropOffDate
+                   where  
+                   d1> ord.DropOffDate && d2>ord.DropOffDate
+
                    select x;
+
+            //where dateIn<x.PickUpDate && dateOut < x.DropOffDate
+            //       where dateIn > x.PickUpDate && dateOut < x.DropOffDate
         }
 
 

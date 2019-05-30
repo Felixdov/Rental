@@ -22,15 +22,6 @@
     </div>
     <button id="carType" class="form-control-static">Show chosen CarType</button>
     <button id="availableCars" class="form-control-static">מצא רכבים פנויים</button>
-    @*<select id="choosecartype">
-            <option value="">בחר סוג רכב</option>
-            <option value="mini">mini</option>
-            <option value="compact">compact</option>
-            <option value="standard">standard</option>
-            <option value="family">family</option>
-            <option value="full size">full size</option>
-        </select>
-        <br />*@
     <br />
     <br />
 
@@ -104,17 +95,19 @@
 
     //var tblCars = "<tr><th>CAR TYPE</th><th>COLOR</th><th>ENGINE</th><th>CarID</th><th><button>Choose</button></th></tr>";
     $('#showAllCars').click(function () {
+        $("#Tab").find("tr:gt(0)").remove();
         $.getJSON('/api/carlistapi/', function (data) {
             $.each(data, function (key, value) {
-                $('<tr><td>' + value.ID + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + value.CarTypeName + '</td><td>' + '<button id="alt">' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
+                $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' +  value.ID+ '</td><td>' + '<button id="alt">' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
             });
         });
     });
 
     //method to show chosen datatable by slected car type
     $("#carType").click(function () {
+        $("#Tab").find("tr:gt(0)").remove();
         var carType = $("#chooseCarType option:selected").val();
-        alert($("#chooseCarType option:selected").val());
+        //alert($("#chooseCarType option:selected").val());
         $.getJSON('/api/carlistapi?CarTypeName=' + carType, function (data) {
             $.each(data, function (key, value) {
                 $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + value.ID + '</td><td>' + value.PricePerDay + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
@@ -122,25 +115,56 @@
         });
     });
 
-
     //method for choosing between two dates
-    
-    $("#availableCars").click(function () {
-        var dateIn = $("dateIn").value();
-        var dateOut = $("dateOut").val();
-        alert($("#dateIn").val());
-        $.getJSON('/api/carlistapi?dateIn=' + dateIn +'&'+'dateOut=' + dateOut, function (data) {
-            alert('hello');
+
+    //$("#availableCars").click(function () {
+    //    var dateIN = $("#dateIn").val();
+    //    alert($("#dateIn").val());
+    //    $.getJSON('/api/carlistapi?PickUpDate=' + dateIN, function (data) {
+    //        $.each(data, function (key, value) {
+    //            $('<tbody><tr><td>' + value.OrderID + '</td><td>' + value.CustName + '</td><td>' + value.CarID + '</td><td>' + value.OrderDate + '</td><td>' + '</td><td>' + value.PickUpDate + '</td><td>' + '</td><td>' + value.DropOffDate + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr></tbody>').appendTo($('#Tab'));
+    //        });
+    //    });
+    //});
+
+
+    //Method: show availble cars to rent by date
+    $('#availableCars').click(function () {
+        var carType = $('#chooseCarType option:selected').val();
+        var dateI = $('#dateIn').val();
+        var dateO = $('#dateOut').val();
+        $.ajax({
+            type: 'Post',
+            contentType: 'application/json;charset=utf-8',
+            url: 'api/carlistapi',
+            data: JSON.stringify({
+                //CarTypeName: carType,
+                PickUpDate: dateI,
+                DropOffDate: dateO
+            }),
+            dataType: 'json',
+            success: function () {
+                $.getJSON('/api/carlistapi', function (data) {
+                    $.each(data, function (key, value) {
+                        $('<tr><td>' + value.CarTypeName + '</td><td>' + value.Color + '</td><td>' + value.Engine + '</td><td>' + '<button>' + 'choose' + '</button>' + '</td></tr>').appendTo($('#Tab'));
+                    });
+                });
+            }
         });
     });
 
 
+
+    //method : add new car
     $('#postButton').click(function () {
+        alert('hello');
         var ctm = $('#carTypeName').val();
         var color = $('#color').val();
         var engine = $('#engine').val();
         var carTypeID = $('#carTypeID').val();
         var carID = $('#carID').val();
+        alert(ctm);
+        // post request by ajax doesnt work 
         $.ajax({
             type: 'Post',
             contentType: 'application/json;charset=utf-8',

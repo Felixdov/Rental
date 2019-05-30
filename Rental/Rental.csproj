@@ -202,7 +202,6 @@
     <Compile Include="Controllers\CarListApiController.cs" />
     <Compile Include="Controllers\CarOrdersApiController.cs" />
     <Compile Include="Controllers\CarsDescriptionController.cs" />
-    <Compile Include="Controllers\CarsListController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\RentController.cs" />

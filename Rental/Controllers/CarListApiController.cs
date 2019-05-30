@@ -13,19 +13,7 @@ namespace Rental.Controllers
 {
     public class CarListApiController : ApiController
     {
-        // GET: CarListApi
-        //private RentCarEntities dal = new RentCarEntities();
-
-
-        //  Cars_dal dal = new Cars_dal();
-        //List<CarInventory> carList = new List<CarInventory>()
-        //{
-
-        //    //new CarModel {carTypeID=1,categorie="famaly",modelName="mazda3" },
-        //    // new CarModel {carTypeID=2,categorie="mini",modelName="mazda2" },
-        //    //  new CarModel {carTypeID=3,categorie="famaly",modelName="mazda6" },
-        //};
-
+     
         public IEnumerable<CarInventory> GetAllCars() // the methoda is called because its named Get... and by the call from the JQuery
         {
             //using (RentCarEntities dal=new RentCarEntities())
@@ -39,6 +27,8 @@ namespace Rental.Controllers
             }
         }
 
+
+        //method : returns car details by car ID (number)
         public CarInventory GetChosenCar(int CarID) // the methoda is called because its named Get... and by the call from the JQuery
         {
 
@@ -50,15 +40,15 @@ namespace Rental.Controllers
             {
                 return carsfromdb.ChosenCar(CarID);
             }
-           
+
         }
 
+        //method returns chosen car by selected type from select tag
         public IQueryable<CarInventory> GetCarByCategory(string CarTypeName)
         {
 
             using (CarsLogic carsByCategory = new CarsLogic())
             {
-
                 return carsByCategory.CarByCategory(CarTypeName).AsQueryable();
                 //return from x in dal.CarInventories
                 //       where x.CarTypeName.Contains(CarTypeName)
@@ -66,29 +56,41 @@ namespace Rental.Controllers
             }
         }
 
-        public IQueryable<OrderList> GetAvailableCars(DateTime dateIn, DateTime dateOut)
+
+        // not working yet
+        public IQueryable<CarInventory> PostAvailableCars(DateTime dateIn, DateTime dateOut)
         {
 
             using (CarsLogic availableCars = new CarsLogic())
             {
 
-                return availableCars.AvailableCars(dateIn, dateOut).AsQueryable();
+                //DateTime parsedIn = DateTime.Parse(dateIn);
+                //DateTime parsedOut = DateTime.Parse(dateOut);
+                DateTime parsedIn = dateIn;
+                DateTime parsedOut = dateOut;
+                return availableCars.AvailableCars(parsedIn, parsedOut).AsQueryable();
                 //return from x in dal.CarInventories
                 //       where x.CarTypeName.Contains(CarTypeName)
                 //       select x;
             }
         }
 
+        //not working yet brcause of date type 
 
+        public IQueryable<CarInventory> postneworder(string carType, DateTime dateIn, DateTime dateOut)
+        {
 
-        //public void PostNewOrder(CarInventory car)
-        //{
-        //    using (CarsLogic carsToDb = new CarsLogic())
-        //    {
-        //        carsToDb.PostCreateNewCar(car);
-
-        //    }
-        //}
+            using (CarsLogic availableCars = new CarsLogic())
+            {
+                string cType = carType;
+                DateTime In = dateIn;
+                DateTime Out = dateOut;
+                return availableCars.AvailableCars(dateIn, dateOut).AsQueryable();
+                //return from x in dal.CarInventories
+                //       where x.CarTypeName.Contains(CarTypeName)
+                //       select x;
+            }
+        }
 
         //public IHttpActionResult GetCar(int id) //GET that returns value by parameter.
         //{

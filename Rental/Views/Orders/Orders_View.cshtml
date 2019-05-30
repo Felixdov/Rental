@@ -64,12 +64,12 @@
 </form>
 <script src="~/Scripts/jquery-3.3.1.js"></script>
 <script>
-
+    //show all orders
     $('#showOrders').click(function () {
         $.getJSON('/api/carordersapi/', function (data) {
             alert("Hello");
             $.each(data, function (key, value) {
-                $('<tbody><tr><td>' + value.OrderID + '</td><td>' + value.CustName + '</td><td>' + value.CarID + '</td><td>' + value.OrderDate + '</td><td>' + '</td><td>' + value.PickUpDate + '</td><td>' + '</td><td>' + value.DropOffDate + '</td><td>'+'<button>' + 'choose' + '</button>' + '</td></tr></tbody>').appendTo($('#Tab'));
+                $('<tbody><tr><td>' + value.OrderID + '</td><td>' + value.CustName + '</td><td>' + value.CarID + '</td><td>' + value.OrderDate + '</td><td>' + value.PickUpDate + '</td><td>' + value.DropOffDate + '</td><td>'+'<button>' + 'choose' + '</button>' + '</td></tr></tbody>').appendTo($('#Tab'));
             });
         });
     });
